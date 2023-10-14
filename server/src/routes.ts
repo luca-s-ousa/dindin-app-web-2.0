@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { helloController } from "./controllers/hello";
+import { userAccountAlreadyExists } from "./middlewares/users";
+import { registerNewUser } from "./controllers/users";
 
 const routers = Router();
 
-routers.get("/hello", helloController);
+routers.post("/user", userAccountAlreadyExists, registerNewUser);
 
 export { routers };

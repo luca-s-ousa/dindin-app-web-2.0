@@ -11,11 +11,12 @@ datasource db {
 }
 
 model users {
-  id           Int            @id @default(autoincrement())
-  name         String
-  email        String         @unique
-  password     String
-  transactions transactions[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String          @unique
+  password      String
+  transactions  transactions[]
+  refresh_token refresh_token[]
 }
 
 model categories {
@@ -33,4 +34,11 @@ model transactions {
   user_id          Int
   categorie        categories @relation(fields: [categorie_id], references: [id])
   categorie_id     Int
+}
+
+model refresh_token {
+  id        String @id @default(uuid())
+  expiresIn Int
+  user      users  @relation(fields: [user_id], references: [id])
+  user_id   Int
 }

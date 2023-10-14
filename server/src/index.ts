@@ -7,4 +7,4 @@ app.use(express.json());
 
 app.use(routers);
 
-app.listen(() => console.log("Server listening on port 8800"));
+app.listen(8800, () => console.log("Server listening on port 8800"));
