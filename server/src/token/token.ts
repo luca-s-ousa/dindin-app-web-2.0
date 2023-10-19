@@ -4,12 +4,12 @@ import { prisma } from "../../prisma/client";
 import dayjs from "dayjs";
 
 export const createNewToken = (clientId: number) => {
-  const token = jwt.sign({ clientId }, jwtPass, { expiresIn: "30s" });
+  const token = jwt.sign({ clientId }, jwtPass, { expiresIn: "3h" });
   return token;
 };
 
 export const createNewRefreshToken = async (clientId: number) => {
-  const expiresIn = dayjs().add(2, "minutes").unix();
+  const expiresIn = dayjs().add(3, "days").unix();
 
   const refreshToken = await prisma.refresh_token.create({
     data: { user_id: clientId, expiresIn },

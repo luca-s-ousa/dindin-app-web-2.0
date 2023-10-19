@@ -24,10 +24,6 @@ export const registerNewUser = async (req: Request, res: Response) => {
   }
 };
 
-export const routerProtected = (_: Request, res: Response) => {
-  return res.status(200).json({ message: "Rota protegida acessada" });
-};
-
 export const login = async (req: Request, res: Response) => {
   const { id: clientId } = (req as any).userAccount as Omit<User, "password">;
   try {
@@ -36,5 +32,14 @@ export const login = async (req: Request, res: Response) => {
     return res.status(200).json({ ...authData, clientId });
   } catch (error) {
     return res.status(500).json({ message: "Erro interno no servidor" });
+  }
+};
+
+export const detailUser = async (req: Request, res: Response) => {
+  const { password, ...userLogged } = (req as any).userLogged as User;
+  try {
+    return res.status(200).json({ ...userLogged });
+  } catch (error) {
+    return res.status(500).json({ message: "Erro Interno no Servidor" });
   }
 };
