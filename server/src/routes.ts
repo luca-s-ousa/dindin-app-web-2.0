@@ -18,6 +18,7 @@ import {
   validationTypeTransaction,
 } from "./middlewares/transactions";
 import { registerNewTransaction } from "./controllers/transactions";
+import { listCategories } from "./controllers/categories";
 
 const routers = Router();
 
@@ -37,6 +38,8 @@ routers.post(
   validationRefreshToken,
   generateTokenFromRefreshToken
 );
+
+routers.get("/categories", validationAuth, listCategories);
 
 routers.post(
   "/transaction",
