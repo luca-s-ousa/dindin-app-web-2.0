@@ -17,7 +17,10 @@ import {
   validationCategoryExists,
   validationTypeTransaction,
 } from "./middlewares/transactions";
-import { registerNewTransaction } from "./controllers/transactions";
+import {
+  listTransactions,
+  registerNewTransaction,
+} from "./controllers/transactions";
 import { listCategories } from "./controllers/categories";
 
 const routers = Router();
@@ -48,5 +51,7 @@ routers.post(
   validationCategoryExists,
   registerNewTransaction
 );
+
+routers.get("/transactions", validationAuth, listTransactions);
 
 export { routers };

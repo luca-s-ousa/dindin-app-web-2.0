@@ -40,3 +40,27 @@ export const registerNewTransaction = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Erro interno no servidor!" });
   }
 };
+
+export const listTransactions = async (req: Request, res: Response) => {
+  const user = (req as any).userLogged as User;
+  try {
+    const userTransactions = await prisma.transactions.findMany({
+      where: { user_id: user.id },
+      include: {
+        categorie: { select: { description: true } },
+      },
+    });
+
+    const transactions = userTransactions.map((transaction) => {
+      const { categorie, ...dataTransaction } = transaction;
+      return {
+        ...dataTransaction,
+        categorie_name: transaction.categorie.description,
+      };
+    });
+
+    return res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: "Erro interno no servidor!" });
+  }
+};
