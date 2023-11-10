@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import {
   userAccountAlreadyExists,
   userAccountDoesNotExist,
@@ -13,6 +13,11 @@ import {
 import { validationAuth } from "./middlewares/authentication";
 import { validationRefreshToken } from "./middlewares/token";
 import { generateTokenFromRefreshToken } from "./controllers/token";
+import {
+  validationCategoryExists,
+  validationTypeTransaction,
+} from "./middlewares/transactions";
+import { registerNewTransaction } from "./controllers/transactions";
 
 const routers = Router();
 
@@ -31,6 +36,14 @@ routers.post(
   "/refresh-token",
   validationRefreshToken,
   generateTokenFromRefreshToken
+);
+
+routers.post(
+  "/transaction",
+  validationAuth,
+  validationTypeTransaction,
+  validationCategoryExists,
+  registerNewTransaction
 );
 
 export { routers };

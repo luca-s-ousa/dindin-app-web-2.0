@@ -12,7 +12,6 @@ export const comparePassword = async (
   userLogged: boolean
 ) => {
   const validatePassword = await compare(passwordInput, encryptedPassword);
-  console.log(validatePassword);
 
   if (!validatePassword) {
     if (userLogged) {

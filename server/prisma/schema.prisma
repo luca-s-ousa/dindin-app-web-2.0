@@ -34,6 +34,7 @@ model transactions {
   user_id          Int
   categorie        categories @relation(fields: [categorie_id], references: [id])
   categorie_id     Int
+  type             String
 }
 
 model refresh_token {
