@@ -15,9 +15,11 @@ import { validationRefreshToken } from "./middlewares/token";
 import { generateTokenFromRefreshToken } from "./controllers/token";
 import {
   validationCategoryExists,
+  validationTransactionExists,
   validationTypeTransaction,
 } from "./middlewares/transactions";
 import {
+  detailTransaction,
   listTransactions,
   registerNewTransaction,
 } from "./controllers/transactions";
@@ -53,5 +55,11 @@ routers.post(
 );
 
 routers.get("/transactions", validationAuth, listTransactions);
+routers.get(
+  "/transaction/:id",
+  validationAuth,
+  validationTransactionExists,
+  detailTransaction
+);
 
 export { routers };

@@ -2,6 +2,7 @@ import { Request, Response, response } from "express";
 import { User } from "../types/user";
 import { prisma } from "../../prisma/client";
 import { Categorie } from "../types/categorie";
+import { Transaction } from "../types/transaction";
 
 export const registerNewTransaction = async (req: Request, res: Response) => {
   const { id: userId } = (req as any).userLogged as User;
@@ -62,5 +63,15 @@ export const listTransactions = async (req: Request, res: Response) => {
     return res.status(200).json(transactions);
   } catch (error) {
     res.status(500).json({ message: "Erro interno no servidor!" });
+  }
+};
+
+export const detailTransaction = async (req: Request, res: Response) => {
+  try {
+    const transaction = (req as any).transaction as Transaction;
+
+    return res.status(200).json(transaction);
+  } catch (error) {
+    return res.status(500).json({ message: "Erro interno no servidor!" });
   }
 };
