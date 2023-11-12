@@ -18,25 +18,13 @@ export const registerNewTransaction = async (req: Request, res: Response) => {
         type: String(type),
         user_id: userId!,
         categorie_id: categorieId!,
+        transaction_date: new Date(),
       },
     });
 
-    const dateCreatedTransaction = new Date(
-      newTransaction.transaction_date
-    ).toISOString();
-
-    const responseData = {
-      id: newTransaction.id,
-      type,
-      amount: Number(amount),
-      description,
-      transaction_date: dateCreatedTransaction,
-      userId,
-      categorieId,
-      cateorieName: categorieName,
-    };
-
-    return res.status(200).json(responseData);
+    return res
+      .status(200)
+      .json({ ...newTransaction, categorie_name: categorieName });
   } catch (error) {
     return res.status(500).json({ message: "Erro interno no servidor!" });
   }
@@ -71,6 +59,32 @@ export const detailTransaction = async (req: Request, res: Response) => {
     const transaction = (req as any).transaction as Transaction;
 
     return res.status(200).json(transaction);
+  } catch (error) {
+    return res.status(500).json({ message: "Erro interno no servidor!" });
+  }
+};
+
+export const editTransaction = async (req: Request, res: Response) => {
+  const { categorieId, type, description, amount } = req.body;
+  const { id: user_id } = (req as any).userLogged as User;
+  const id = Number(req.params.id);
+
+  try {
+    await prisma.transactions.update({
+      data: {
+        categorie_id: categorieId,
+        type,
+        description,
+        amount,
+        transaction_date: new Date(),
+      },
+      where: {
+        id: id,
+        user_id,
+      },
+    });
+
+    return res.status(200).json({ message: "Dados atualizados" });
   } catch (error) {
     return res.status(500).json({ message: "Erro interno no servidor!" });
   }

@@ -20,6 +20,7 @@ import {
 } from "./middlewares/transactions";
 import {
   detailTransaction,
+  editTransaction,
   listTransactions,
   registerNewTransaction,
 } from "./controllers/transactions";
@@ -60,6 +61,15 @@ routers.get(
   validationAuth,
   validationTransactionExists,
   detailTransaction
+);
+
+routers.put(
+  "/transaction/:id",
+  validationAuth,
+  validationTransactionExists,
+  validationTypeTransaction,
+  validationCategoryExists,
+  editTransaction
 );
 
 export { routers };
