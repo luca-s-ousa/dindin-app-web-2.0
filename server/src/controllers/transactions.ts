@@ -89,3 +89,20 @@ export const editTransaction = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Erro interno no servidor!" });
   }
 };
+
+export const deleteTransaction = async (req: Request, res: Response) => {
+  const userLogged = (req as any).userLogged as User;
+  const id = Number(req.params.id);
+  try {
+    await prisma.transactions.delete({
+      where: {
+        id: id,
+        user_id: userLogged.id,
+      },
+    });
+
+    return res.status(200).json({ message: "Transação excluída com sucesso!" });
+  } catch (error) {
+    return res.status(500).json({ message: "Erro interno no servidor" });
+  }
+};

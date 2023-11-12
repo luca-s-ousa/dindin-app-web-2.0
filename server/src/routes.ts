@@ -19,6 +19,7 @@ import {
   validationTypeTransaction,
 } from "./middlewares/transactions";
 import {
+  deleteTransaction,
   detailTransaction,
   editTransaction,
   listTransactions,
@@ -70,6 +71,13 @@ routers.put(
   validationTypeTransaction,
   validationCategoryExists,
   editTransaction
+);
+
+routers.delete(
+  "/transaction/:id",
+  validationAuth,
+  validationTransactionExists,
+  deleteTransaction
 );
 
 export { routers };
