@@ -22,6 +22,7 @@ import {
   deleteTransaction,
   detailTransaction,
   editTransaction,
+  extractOfTransactions,
   listTransactions,
   registerNewTransaction,
 } from "./controllers/transactions";
@@ -79,5 +80,7 @@ routers.delete(
   validationTransactionExists,
   deleteTransaction
 );
+
+routers.get("/transactions/extract", validationAuth, extractOfTransactions);
 
 export { routers };
