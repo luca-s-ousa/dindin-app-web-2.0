@@ -32,6 +32,8 @@ export const registerNewTransaction = async (req: Request, res: Response) => {
 
 export const listTransactions = async (req: Request, res: Response) => {
   const user = (req as any).userLogged as User;
+  const filters = req.query.filter as string[];
+
   try {
     const userTransactions = await prisma.transactions.findMany({
       where: { user_id: user.id },
@@ -47,6 +49,24 @@ export const listTransactions = async (req: Request, res: Response) => {
         categorie_name: transaction.categorie.description,
       };
     });
+
+    if (filters) {
+      const filterCategoriesFormaters = filters.map((categorie) => {
+        return categorie.replace(/-/g, " ");
+      });
+
+      const filterTransactions = transactions.filter((transaction) => {
+        if (
+          filterCategoriesFormaters.includes(
+            transaction.categorie_name.toLocaleLowerCase()
+          )
+        ) {
+          return transaction;
+        }
+      });
+
+      return res.status(200).json(filterTransactions);
+    }
 
     return res.status(200).json(transactions);
   } catch (error) {
